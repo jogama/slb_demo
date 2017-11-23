@@ -1,0 +1,31 @@
+# There are several kinds of log files
+*.*log
+*._moos
+*._bhv
+**/eventlog
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# Automatically generated files
+*~
+*.moos++
+*.moos\+\+
+
+bin/*
+build/*
+.svn/
+
+scratch/*
+
