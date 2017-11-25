@@ -1,8 +1,6 @@
 /****************************************************************/
-/*   NAME:                                              */
-/*   ORGN: MIT Cambridge MA                                     */
-/*   FILE: MonteCarloLocalizer_Info.cpp                               */
-/*   DATE: Dec 29th 1963                                        */
+/*   AUTH: Jonathan Garcia-Mallen                               */
+/*   FILE: MonteCarloLocalizer_Info.cpp                         */
 /****************************************************************/
 
 #include <cstdlib>
@@ -94,12 +92,23 @@ void showInterfaceAndExit()
   blk("                                                                ");
   blk("SUBSCRIPTIONS:                                                  ");
   blk("------------------------------------                            ");
+  blk("COMPASS_HEADING    double  [0.0, 360.0) heading reported by the compass     ");
+  blkf"SONAR_DATA                                                      ");  
   blk("  NODE_MESSAGE = src_node=alpha,dest_node=bravo,var_name=FOO,   ");
   blk("                 string_val=BAR                                 ");
   blk("                                                                ");
   blk("PUBLICATIONS:                                                   ");
   blk("------------------------------------                            ");
   blk("  Publications are determined by the node message content.      ");
+  // copied from moos-ivp-kfish's GPSDeviceInfo
+  blk("------------------------------------                                        ");
+  blk("[prefix]_LATITUDE  double  Latitude parsed from recent NMEA sentence        ");
+  blk("[prefix]_LAT       double  Copy of _LATITUDE");
+  blk("[prefix]_LONGITUDE double  Longitude parsed from recent NMEA sentence       ");
+  blk("[prefix]_LONG      double  Copy of _LONGITUDE");
+  blk("[prefix]_X         double  X position in meters relative to the local origin");
+  blk("[prefix]_Y         double  Y position in meters relative to the local origin");
+  blk("[prefix]_SPEED     double  Speed in meters per second, provided by GPS      ");
   blk("                                                                ");
   exit(0);
 }
