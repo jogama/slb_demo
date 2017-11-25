@@ -4,6 +4,7 @@
 #--------------------------------------------------------
 
 SET(SRC
+  ParticleFilter.cpp
   MonteCarloLocalizer.cpp
   MonteCarloLocalizer_Info.cpp
   main.cpp
