@@ -22,7 +22,7 @@ std::vector<double> sample_from_motion_model(const std::vector<double>& control,
 
 // I'll probably use Corey's raycasting code for this one. I also don't understand how the map works here. 
 double measurement_model(const std::vector<double>& sonar, const double& heading, const std::vector<double> state,
-			 const std::vector< std::vector<int> > map);
+			 const std::vector< std::vector<int> >& map);
 
 // Again, don't yet understand what to do with the map.
 // This is the particle filter. MCL = Monte Carlo Localization. 

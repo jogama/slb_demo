@@ -1,6 +1,7 @@
 #include <cmath>   // for trigonometry
 #include <random>  // for probability distributions
 #include "ParticleFilter.h"
+#include "range_libc/includes/RangeLib.h"
 
 // Utility function to sample from the normal dist.
 // This might be more efficient by implementing the normal distribution from scratch, without std::sqrt
@@ -48,8 +49,8 @@ std::vector<double> sample_from_motion_model(const std::vector<double>& control,
   return sampled_state;
 }
 
-double measurement_model(const std::vector<double>& sonar, const double& heading, const std::vector<double> state,
-			 const std::vector< std::vector<int> > map);
+double measurement_model(const std::vector<double>& sonar, const double& compass, const std::vector<double> state,
+			 const std::vector< std::vector<int> >& map);
 
 std::vector<double> MCL(const std::vector<double>& state_previous, const std::vector<double>& control,
 			const std::vector< std::vector<int> > map);

@@ -10,6 +10,8 @@ SET(SRC
   main.cpp
 )
 
+ADD_SUBDIRECTORY(range_libc)
+
 ADD_EXECUTABLE(pMonteCarloLocalizer ${SRC})
 
 TARGET_LINK_LIBRARIES(pMonteCarloLocalizer
@@ -18,3 +20,4 @@ TARGET_LINK_LIBRARIES(pMonteCarloLocalizer
    m
    pthread)
 
+SET(CMAKE_CXX_FLAGS "-std=c++11")
