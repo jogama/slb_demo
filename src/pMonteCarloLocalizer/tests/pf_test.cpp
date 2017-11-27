@@ -1,6 +1,7 @@
 /* Tests ParticleFilter.cpp */
 #include <vector>
 #include <iostream>
+#include <random> 
 #include "../ParticleFilter.h"
 
 using namespace std;
@@ -20,10 +21,21 @@ int main(int argc, char** argv){
     if(i == argc - 1) apptick = stod(argv[i]);
   }
 
-  auto state = sample_from_motion_model(control, state_previous, apptick);
+  cout << "Testing function: sample_from_motion_model" << endl;
+  auto state = mcl::sample_from_motion_model(control, state_previous, apptick);
   cout << "state = {" ;
   for(auto d : state) cout << d << ", ";
-  cout << "}\n";
+  cout << "}" << endl;
+
+  cout << endl << "Testing function: measurement_model" << endl;
+  vector<double> sonar_data = {};
+  double heading = 0;
+  vector< std::vector<int> > map_i_think = {{}};
+  auto w = mcl::measurement_model(sonar_data,
+				      heading,
+				      state_previous,
+				      map_i_think);
+  cout << "w = " << w << endl;
 
   return 0;
 }

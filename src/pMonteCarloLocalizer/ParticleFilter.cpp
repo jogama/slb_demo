@@ -65,7 +65,8 @@ double mcl::measurement_model(const std::vector<double>& sonar, const double& co
   std::uniform_real_distribution<> d_short(1.0, 2.0); // uniform over [a, b) = [1, 2)
   std::uniform_real_distribution<> d_max(1.0, 2.0);
   std::normal_distribution<> d_rand(5,2); // mean = 5, standard dev = 2
-  
+
+  return 0.0;
 }
 
 std::vector<double> mcl::MCL(const std::vector<double>& state_previous, const std::vector<double>& control,
