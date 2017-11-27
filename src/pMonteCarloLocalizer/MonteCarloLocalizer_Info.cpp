@@ -93,7 +93,7 @@ void showInterfaceAndExit()
   blk("SUBSCRIPTIONS:                                                  ");
   blk("------------------------------------                            ");
   blk("COMPASS_HEADING    double  [0.0, 360.0) heading reported by the compass     ");
-  blkf"SONAR_DATA                                                      ");  
+  blk("SONAR_DATA                                                      ");  
   blk("  NODE_MESSAGE = src_node=alpha,dest_node=bravo,var_name=FOO,   ");
   blk("                 string_val=BAR                                 ");
   blk("                                                                ");

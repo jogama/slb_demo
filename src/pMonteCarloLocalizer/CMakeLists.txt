@@ -1,16 +1,18 @@
 #--------------------------------------------------------
-# The CMakeLists.txt for:                       pMonteCarloLocalizer
+# The CMakeLists.txt for:            pMonteCarloLocalizer
 # Author(s):                              
 #--------------------------------------------------------
+
+INCLUDE_DIRECTORIES(range_libc)
 
 SET(SRC
   ParticleFilter.cpp
   MonteCarloLocalizer.cpp
   MonteCarloLocalizer_Info.cpp
   main.cpp
+  range_libc/includes/RangeLib.h
+  range_libc/vendor/lodepng/lodepng.h
 )
-
-ADD_SUBDIRECTORY(range_libc)
 
 ADD_EXECUTABLE(pMonteCarloLocalizer ${SRC})
 
