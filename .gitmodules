@@ -1,3 +1,6 @@
 [submodule "src/pMonteCarloLocalizer/range_libc"]
 	path = src/pMonteCarloLocalizer/range_libc
 	url = https://github.com/kctess5/range_libc
+[submodule "src/pMonteCarloLocalizer/flann"]
+	path = src/pMonteCarloLocalizer/flann
+	url = git@github.com:mariusmuja/flann.git
