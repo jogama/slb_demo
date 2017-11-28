@@ -1,5 +1,6 @@
 #include <cmath>   // for trigonometry
 #include <random>  // for probability distributions
+
 #include "ParticleFilter.h"
 #include "range_libc/includes/RangeLib.h" // for sensor model
 
@@ -57,7 +58,7 @@ double mcl::measurement_model(const std::vector<double>& sonar, const double& co
   //    landing on an expected object, landing on an unexpected object,
   //    multipath / missing obstacles, and random measurements.
   // TODO: implement algorithm to learn the weights (?).
-  double w_correct = .25, w_short = .25, w_max = .25, w_rand = .25;
+  double w_hit = .25, w_short = .25, w_max = .25, w_rand = .25;
   
   std::random_device rd;
   std::mt19937 gen(rd());
@@ -65,6 +66,12 @@ double mcl::measurement_model(const std::vector<double>& sonar, const double& co
   std::uniform_real_distribution<> d_short(1.0, 2.0); // uniform over [a, b) = [1, 2)
   std::uniform_real_distribution<> d_max(1.0, 2.0);
   std::normal_distribution<> d_rand(5,2); // mean = 5, standard dev = 2
+  double mixed = d_hit(gen) * w_hit
+    + d_short(gen) * w_short
+    + d_max(gen) * w_max
+    + d_rand(gen) * w_rand;
+    
+  //  TODO: reduce duplicate <random> code in mcl namespace. eg, use mcl:gen. Also this lambda isn't helping. 
 
   return 0.0;
 }

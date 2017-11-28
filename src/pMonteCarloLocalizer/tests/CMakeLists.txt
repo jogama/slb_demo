@@ -3,6 +3,8 @@
 # Author(s):                              
 #--------------------------------------------------------
 
+SET(CMAKE_CXX_FLAGS "-std=c++11")
+
 INCLUDE_DIRECTORIES(..)
 INCLUDE_DIRECTORIES(../range_libc)
 
@@ -15,4 +17,4 @@ SET(SRC
 
 ADD_EXECUTABLE(pf_test ${SRC})
 
-SET(CMAKE_CXX_FLAGS "-std=c++11")# "-Wall" "-Wextra")
+
