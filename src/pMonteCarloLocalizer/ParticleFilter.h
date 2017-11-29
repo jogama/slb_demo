@@ -21,8 +21,6 @@ class MCL{
  protected:
   double max_sonar_range;
   double get_max_range(){ return max_sonar_range; };
-  void map_index();
-  // Utility function 
 
 };
 

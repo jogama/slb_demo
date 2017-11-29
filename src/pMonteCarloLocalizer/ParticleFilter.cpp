@@ -5,16 +5,6 @@
 //#include "flan/flan.hpp"
 #include "range_libc/includes/RangeLib.h" // for sensor model, if we use raycasting method
 
-// Utility function to sample from the normal dist.
-// This might be more efficient by implementing the normal distribution from scratch, without std::sqrt
-double MCL::sample(const double& variance){
-  // function sample(variance) generates a random sample from a zero-centered distribution
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  double standard_deviation = std::sqrt(variance);
-  std::normal_distribution<> dist(0, standard_deviation);
-  return dist(gen);
-}
 
 
   // TODO: This motion model is specifically for your torpedo-style AUV.
@@ -82,6 +72,8 @@ double MCL::measurement_model(const std::vector<double>& sonar, const std::vecto
   h = state[3]; // heading in radians
   b; // idk how to get beam bearing from measurement index; sonar specific. 
 
+  double dist_sqrd; // distance squared
+  
   // declare q = 1, which is what we return, but what is it? 
   for(double r : sonar){ // r = range detected by this sonar beam
     if( r < carlito.get_max_range()){ 
@@ -90,7 +82,6 @@ double MCL::measurement_model(const std::vector<double>& sonar, const std::vecto
       md = vd + r * std::sin(b);
       
       // then use flann to approximate the object nearest the detected point (my, mx, md)
-      carlito.map_index();
       
       // finally do something with probability and q
     }    
@@ -107,7 +98,15 @@ std::vector<double> MCL::localize(const std::vector<double>& state_previous, con
 //---------------------------------------------------------
 // Utility methods
 
-//double MCL::max_sonar_range(){ }
-void MCL::map_index(){
-  int foo = 42;
+// samples from the normal dist.
+// This might be more efficient by implementing the normal distribution from scratch, without std::sqrt
+double MCL::sample(const double& variance){
+  // function sample(variance) generates a random sample from a zero-centered distribution
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  double standard_deviation = std::sqrt(variance);
+  std::normal_distribution<> dist(0, standard_deviation);
+  return dist(gen);
 }
+
+// MCL::map_index 
