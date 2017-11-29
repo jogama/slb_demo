@@ -29,10 +29,8 @@ int main(int argc, char** argv){
 
   cout << endl << "Testing function: measurement_model" << endl;
   vector<double> sonar_data = {};
-  double heading = 0;
   vector< std::vector<int> > map_i_think = {{}};
   auto w = mcl::measurement_model(sonar_data,
-				      heading,
 				      state_previous,
 				      map_i_think);
   cout << "w = " << w << endl;

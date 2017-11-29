@@ -2,11 +2,12 @@
 #include <random>  // for probability distributions
 
 #include "ParticleFilter.h"
-#include "range_libc/includes/RangeLib.h" // for sensor model
+//#include "flan/flan.hpp"
+#include "range_libc/includes/RangeLib.h" // for sensor model, if we use raycasting method
 
 // Utility function to sample from the normal dist.
 // This might be more efficient by implementing the normal distribution from scratch, without std::sqrt
-double mcl::sample(const double& variance){
+double MCL::sample(const double& variance){
   // function sample(variance) generates a random sample from a zero-centered distribution
   std::random_device rd;
   std::mt19937 gen(rd());
@@ -15,8 +16,24 @@ double mcl::sample(const double& variance){
   return dist(gen);
 }
 
+
+  // TODO: This motion model is specifically for your torpedo-style AUV.
+  /*
+    Samples the motion model, as in Probabilistic Robotics ch5.
+  
+    inputs:
+    control: denoted by uₜ in text. Probably thrust and rudder or ω from compass.
+    state_previous: xₜ₋₁ in text = (x, y, z, θ).
+    We're assuming roll and pitch are always zero.
+    z is distance from ocean floor, probably average of sonar measurments.
+    θ heading in radians from the compass.
+
+    outputs:
+    xₜ = a sample from the motion model. 
+
+  */
 // Motion model is based off of pHelmIvP's subscriptions, NAV_SPEED, NAV_HEADING, and NAV_DEPTH, to be as general as is possible. 
-std::vector<double> mcl::sample_from_motion_model(const std::vector<double>& control, const std::vector<double>& state_previous, double apptick){
+std::vector<double> MCL::sample_from_motion_model(const std::vector<double>& control, const std::vector<double>& state_previous, double apptick){
   // TODO: These are unused parameters that model the accuracy of the actuators. They decrease as accuracy increases. I don't know how I would extract them for a physical vehicle. 
   double a1 = 0.1, a2 = 0.1, a3 = 0.1, a4 = 0.1, a5 = 0.1, a6 = 0.1;
 
@@ -50,31 +67,47 @@ std::vector<double> mcl::sample_from_motion_model(const std::vector<double>& con
   return sampled_state;
 }
 
+/* Compute likelihood of a range scan "sonar", assuming conditional independence between the individual range measurements in the scan.  */
+// Assuming the plane of the sonar points towards "forward" in the auv. It 
+double MCL::measurement_model(const std::vector<double>& sonar, const std::vector<double> state, MCL& carlito){
+  // TODO: ¿ pass in file descriptor or path as map instead of a vector?
 
-double mcl::measurement_model(const std::vector<double>& sonar, const double& compass, const std::vector<double> state,
-			 const std::vector< std::vector<int> >& map){
-  // Set weights with which to mix the distribution.
-  // Respectively, these are the probabliity of a beam
-  //    landing on an expected object, landing on an unexpected object,
-  //    multipath / missing obstacles, and random measurements.
-  // TODO: implement algorithm to learn the weights (?).
-  double w_hit = .25, w_short = .25, w_max = .25, w_rand = .25;
+  // To include vehicle roll into model, bearing_beam += roll_veh. Yaw will require more trig. 
+
+  // measurement x, y, and depth
+  double vx, vy, vd, h, mx, my, md, b;
+  vx = state[0];
+  vy = state[1];
+  vd = state[2];
+  h = state[3]; // heading in radians
+  b; // idk how to get beam bearing from measurement index; sonar specific. 
+
+  // declare q = 1, which is what we return, but what is it? 
+  for(double r : sonar){ // r = range detected by this sonar beam
+    if( r < carlito.get_max_range()){ 
+      my = vy + r * std::cos(b) * std::sin(h);
+      mx = vx + r * std::cos(b) * std::cos(h);
+      md = vd + r * std::sin(b);
+      
+      // then use flann to approximate the object nearest the detected point (my, mx, md)
+      carlito.map_index();
+      
+      // finally do something with probability and q
+    }    
+  }
+
+  //return q, whatever it is. 
   
-  std::random_device rd;
-  std::mt19937 gen(rd());
-  std::exponential_distribution<> d_hit(1); // lambda for P(x|l) = l*exp(-l*x)
-  std::uniform_real_distribution<> d_short(1.0, 2.0); // uniform over [a, b) = [1, 2)
-  std::uniform_real_distribution<> d_max(1.0, 2.0);
-  std::normal_distribution<> d_rand(5,2); // mean = 5, standard dev = 2
-  double mixed = d_hit(gen) * w_hit
-    + d_short(gen) * w_short
-    + d_max(gen) * w_max
-    + d_rand(gen) * w_rand;
-    
-  //  TODO: reduce duplicate <random> code in mcl namespace. eg, use mcl:gen. Also this lambda isn't helping. 
-
-  return 0.0;
 }
 
-std::vector<double> mcl::MCL(const std::vector<double>& state_previous, const std::vector<double>& control,
-			const std::vector< std::vector<int> > map);
+std::vector<double> MCL::localize(const std::vector<double>& state_previous, const std::vector<double>& control, MCL& carlito){
+  return std::vector<double> {};
+}
+
+//---------------------------------------------------------
+// Utility methods
+
+//double MCL::max_sonar_range(){ }
+void MCL::map_index(){
+  int foo = 42;
+}
